@@ -11,6 +11,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public Map<String, Object> getUser(@PathVariable String id) {
+    	//Testing purpose only, returning dummy data
         Map<String, Object> user = new HashMap<>();
         user.put("id", id);
         user.put("name", "Dummy User");
