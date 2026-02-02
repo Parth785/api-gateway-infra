@@ -1,0 +1,24 @@
+INDEX VERSION 1.134+/home/user/Videos/api-gateway-infra/.metadata/.plugins/org.eclipse.jdt.core
+3294156912.index
+1210680688.index
+1240482463.index
+2092767508.index
+4231107873.index
+2569178741.index
+419501233.index
+1811119732.index
+2259363399.index
+2447092306.index
+3941084406.index
+174999678.index
+35723524.index
+2631029543.index
+2044434428.index
+3165476383.index
+1396100609.index
+3054950586.index
+1053125473.index
+1865797976.index
+2359837260.index
+3075083288.index
+2592005578.index
