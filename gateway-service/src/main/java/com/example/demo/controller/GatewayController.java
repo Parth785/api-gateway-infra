@@ -57,9 +57,15 @@ public class GatewayController {
     	    clientIp = "localhost";
     	}
     	if (!rateLimiterService.isAllowed(clientIp)) {
-            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                                 .body("Slow down! You've reached the limit.");
-        }
+    	    return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+    	        .body(Map.of(
+    	            "error", "Rate limit exceeded",
+    	            "message", "Too many requests from " + clientIp + ". Try again in 60 seconds.",
+    	            "limit", 5,
+    	            "window", "60 seconds",
+    	            "retryAfter", 60
+    	        ));
+    	}
         Map orderBody = userService.fetchOrderFromRemote(id); 
         return ResponseEntity.ok(orderBody);
     }
