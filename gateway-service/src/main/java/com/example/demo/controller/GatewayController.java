@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.demo.JWT.JwtUtil;
 import com.example.demo.service.RateLimiterService;
 import com.example.demo.service.UserService;
 
@@ -22,27 +23,49 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/")
 public class GatewayController {
     
-    @Autowired
+	@Autowired
     private RateLimiterService rateLimiterService;
     
     @Autowired
-    private UserService userService; // This service should have @Cacheable
+    private JwtUtil jwtUtil;  // Add this to validate JWT tokens
+    
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/users/{id}")
-    // REMOVED @Cacheable from here!
     public ResponseEntity<Object> getUserById(@PathVariable String id, HttpServletRequest request) {
+        
+        // 1. CHECK JWT TOKEN FIRST
+        String authHeader = request.getHeader("Authorization");
+        
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "Missing or invalid Authorization header"));
+        }
+        
+        String token = authHeader.substring(7); // Remove "Bearer " prefix
+        
+        if (!jwtUtil.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "Invalid or expired token"));
+        }
+        
+        // Extract username (optional, for logging)
+        String username = jwtUtil.extractUsername(token);
+        System.out.println("✅ Authenticated user: " + username);
+        
+        // 2. THEN CHECK RATE LIMIT
         String clientIp = request.getRemoteAddr();
-     // Normalize localhost for testing
         if (clientIp.equals("0:0:0:0:0:0:0:1") || clientIp.equals("127.0.0.1")) {
             clientIp = "localhost";
         }
-        // 1. Rate Limiter ALWAYS runs now
+        
         if (!rateLimiterService.isAllowed(clientIp)) {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                                 .body("Slow down! You've reached the limit.");
+                .body(Map.of("error", "Rate limit exceeded"));
         }
 
-        // 2. Fetch data (This method inside UserService has @Cacheable)
+        // 3. FORWARD TO BACKEND
         Map userBody = userService.fetchUserFromRemote(id);
         return ResponseEntity.ok(userBody);
     }
