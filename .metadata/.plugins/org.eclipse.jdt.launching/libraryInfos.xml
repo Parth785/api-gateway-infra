@@ -2,7 +2,7 @@
 <libraryInfos>
     <libraryInfo home="/home/user/Downloads/sts-4.32.0.RELEASE/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_21.0.8.v20250724-1412/jre" version="21.0.8"/>
     <libraryInfo home="/usr/lib/jvm/java-17-openjdk-amd64" version="17.0.18"/>
-    <libraryInfo home="/usr/lib/jvm/java-8-openjdk-amd64" version="1.8.0_472">
+    <libraryInfo home="/usr/lib/jvm/java-8-openjdk-amd64" version="1.8.0_482">
         <bootpath>
             <entry path="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/resources.jar"/>
             <entry path="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar"/>
