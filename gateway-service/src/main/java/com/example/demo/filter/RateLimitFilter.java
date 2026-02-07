@@ -26,7 +26,17 @@ public class RateLimitFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+    	
+    	String path = request.getRequestURI();
 
+        // 1️⃣ EXCLUDE these endpoints from rate limiting
+        if (path.startsWith("/auth")
+                || path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")) {
+
+            filterChain.doFilter(request, response);
+            return;
+        }
     	System.out.println("RateLimitFilter executed for: " + request.getRequestURI());
 
         // 1️⃣ Get client IP
