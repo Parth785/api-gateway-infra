@@ -22,7 +22,7 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> credentials) {
         String username = credentials.get("username");
         String password = credentials.get("password");
-        
+        System.out.println("Login attempt: " + username);
         // Simple validation (hardcoded for demo)
         if ("parth".equals(username) && "test123".equals(password)) {
             String token = jwtUtil.generateToken(username);

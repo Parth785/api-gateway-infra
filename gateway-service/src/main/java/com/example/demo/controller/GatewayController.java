@@ -29,44 +29,12 @@ public class GatewayController {
     private UserService userService; // This service should have @Cacheable
 
     @GetMapping("/users/{id}")
-    // REMOVED @Cacheable from here!
-    public ResponseEntity<Object> getUserById(@PathVariable String id, HttpServletRequest request) {
-        String clientIp = request.getRemoteAddr();
-     // Normalize localhost for testing
-        if (clientIp.equals("0:0:0:0:0:0:0:1") || clientIp.equals("127.0.0.1")) {
-            clientIp = "localhost";
-        }
-        // 1. Rate Limiter ALWAYS runs now
-        if (!rateLimiterService.isAllowed(clientIp)) {
-            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                                 .body("Slow down! You've reached the limit.");
-        }
-
-        // 2. Fetch data (This method inside UserService has @Cacheable)
-        Map userBody = userService.fetchUserFromRemote(id);
-        return ResponseEntity.ok(userBody);
+    public ResponseEntity<Object> getUserById(@PathVariable String id) {
+        return ResponseEntity.ok(userService.fetchUserFromRemote(id));
     }
 
     @GetMapping("/orders/{id}")
-    public ResponseEntity<Object> getOrderById(@PathVariable String id, HttpServletRequest request) {
-        // For learning, it's better to also move this logic to a Service 
-        // and put @Cacheable there returning a Map.
-    	String clientIp = request.getRemoteAddr();
-    	// Normalize localhost for testing
-    	if (clientIp.equals("0:0:0:0:0:0:0:1") || clientIp.equals("127.0.0.1")) {
-    	    clientIp = "localhost";
-    	}
-    	if (!rateLimiterService.isAllowed(clientIp)) {
-    	    return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-    	        .body(Map.of(
-    	            "error", "Rate limit exceeded",
-    	            "message", "Too many requests from " + clientIp + ". Try again in 60 seconds.",
-    	            "limit", 5,
-    	            "window", "60 seconds",
-    	            "retryAfter", 60
-    	        ));
-    	}
-        Map orderBody = userService.fetchOrderFromRemote(id); 
-        return ResponseEntity.ok(orderBody);
+    public ResponseEntity<Object> getOrderById(@PathVariable String id) {
+        return ResponseEntity.ok(userService.fetchOrderFromRemote(id));
     }
 }
