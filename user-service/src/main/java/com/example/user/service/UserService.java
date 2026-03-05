@@ -45,20 +45,13 @@ public class UserService {
     }
     
     public UserResponse getUserById(Long id) {
-        User user = null;
-		try {
-			user = userRepository.findById(id)
-			    .orElseThrow(() -> new Exception("User not found"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        User user = userRepository.findById(id).orElse(null);
 
         return new UserResponse(
-            user.getId(),
-            user.getName(),
-            user.getEmail(),
-            user.getCreatedAt()
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getCreatedAt()
         );
     }
 }
