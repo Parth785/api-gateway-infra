@@ -1,0 +1,22 @@
+server:
+  port: 8085
+
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/userdb?options=-c%20TimeZone=Asia/Kolkata
+    username: postgres
+    password: postgres
+#		url: ${SPRING_DATASOURCE_URL}
+#		username: ${SPRING_DATASOURCE_USERNAME}
+#		password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  application:
+    name: user-service
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+

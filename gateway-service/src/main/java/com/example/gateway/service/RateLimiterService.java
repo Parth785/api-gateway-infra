@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.gateway.service;
 
 import java.time.Duration;
 

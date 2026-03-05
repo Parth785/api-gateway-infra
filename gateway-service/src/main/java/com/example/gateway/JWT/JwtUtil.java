@@ -1,4 +1,4 @@
-package com.example.demo.JWT;
+package com.example.gateway.JWT;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

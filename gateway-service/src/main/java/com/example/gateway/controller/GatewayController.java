@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.gateway.controller;
 
 import java.util.Map;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.service.RateLimiterService;
-import com.example.demo.service.UserService;
+import com.example.gateway.service.RateLimiterService;
+import com.example.gateway.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 

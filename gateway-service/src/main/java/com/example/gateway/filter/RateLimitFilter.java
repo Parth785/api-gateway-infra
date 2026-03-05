@@ -1,4 +1,4 @@
-package com.example.demo.filter;
+package com.example.gateway.filter;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.demo.service.RateLimiterService;
+import com.example.gateway.service.RateLimiterService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

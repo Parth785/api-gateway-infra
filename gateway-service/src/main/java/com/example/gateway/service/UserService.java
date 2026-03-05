@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.gateway.service;
 
 import java.util.Map;
 
@@ -16,7 +16,7 @@ public class UserService {
     @Cacheable(value = "users", key = "#id")
     public Map fetchUserFromRemote(String id) {
         System.out.println("Fetching user from remote Service for ID: " + id);
-        String userServiceUrl = "http://localhost:8083/users/" + id;
+        String userServiceUrl = "http://localhost:8085/users/" + id;
         return restTemplate.getForObject(userServiceUrl, Map.class);
     }
 
