@@ -11,3 +11,9 @@ spring:
     show-sql: true
 server:
   port: 8082
+
+services:
+  user-service:
+    url: http://localhost:8085
+  product-service:
+    url: http://localhost:8087

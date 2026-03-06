@@ -33,18 +33,18 @@ public class OrderController {
                 .body(orderService.createOrder(request));
     }
 
-    @GetMapping("/user/{userId}")
-    public List<OrderResponse> getOrdersByUser(
-            @PathVariable Long userId) {
-
-        return orderService.getOrdersByUser(userId);
-    }
-
-    @PutMapping("/{id}/status")
-    public OrderResponse updateStatus(
-            @PathVariable Long id,
-            @RequestParam OrderStatus status) {
-
-        return orderService.updateStatus(id, status);
-    }
+//    @GetMapping("/user/{userId}")
+//    public List<OrderResponse> getOrdersByUser(
+//            @PathVariable Long userId) {
+//
+//        return orderService.getOrdersByUser(userId);
+//    }
+//
+//    @PutMapping("/{id}/status")
+//    public OrderResponse updateStatus(
+//            @PathVariable Long id,
+//            @RequestParam OrderStatus status) {
+//
+//        return orderService.updateStatus(id, status);
+//    }
 }
