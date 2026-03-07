@@ -2,7 +2,7 @@ package com.example.gateway.controller;
 
 import java.util.Map;
 
-import org.apache.catalina.util.RateLimiter;
+//import org.apache.catalina.util.RateLimiter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import com.example.gateway.service.RateLimiterService;
 import com.example.gateway.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
+//import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/")
