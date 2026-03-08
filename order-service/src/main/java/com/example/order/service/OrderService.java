@@ -28,10 +28,10 @@ public class OrderService {
 	    private static final String USER_SERVICE_URL =
 	            "http://localhost:8085/users/";
 
-	    public OrderResponse createOrder(CreateOrderRequest request) {
+	    public OrderResponse createOrder(Long userId, CreateOrderRequest request) {
 
 	        Order order = new Order();
-	        order.setUserId(request.getUserId());
+	        order.setUserId(userId);
 
 	        BigDecimal total = BigDecimal.ZERO;
 

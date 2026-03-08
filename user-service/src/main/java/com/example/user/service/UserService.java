@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.user.dto.CreateUserRequest;
+import com.example.user.dto.LoginRequest;
 import com.example.user.dto.UserResponse;
 import com.example.user.entity.User;
 import com.example.user.exception.EmailAlreadyExistsException;
@@ -19,6 +20,19 @@ public class UserService {
 
 	 private final UserRepository userRepository;
      private final PasswordEncoder passwordEncoder;
+     private final JwtService jwtService;
+     
+     public String login(LoginRequest request) {
+
+    	    User user = userRepository.findByEmail(request.getEmail())
+    	            .orElseThrow(() -> new RuntimeException("User not found"));
+
+    	    if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+    	        throw new RuntimeException("Invalid credentials");
+    	    }
+
+    	    return jwtService.generateToken(user);
+    	}
 
      public UserResponse createUser(CreateUserRequest request) {
 

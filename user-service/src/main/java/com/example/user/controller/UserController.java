@@ -1,8 +1,6 @@
 package com.example.user.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.user.service.UserService;
 import com.example.user.dto.CreateUserRequest;
+import com.example.user.dto.LoginRequest;
 import com.example.user.dto.UserResponse;
 import com.example.user.entity.User;
+import com.example.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +24,14 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
+	
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+
+	    String token = userService.login(request);
+
+	    return ResponseEntity.ok(token);
+	}
 
 	@PostMapping
 	public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
