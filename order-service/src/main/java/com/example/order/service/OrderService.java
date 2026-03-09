@@ -14,6 +14,8 @@ import com.example.order.dto.OrderStatus;
 import com.example.order.dto.ProductResponse;
 import com.example.order.entity.Order;
 import com.example.order.entity.OrderItem;
+import com.example.order.event.OrderCreatedEvent;
+import com.example.order.event.OrderEventProducer;
 import com.example.order.repository.OrderRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,8 @@ import lombok.RequiredArgsConstructor;
 public class OrderService {
 
 	 private final OrderRepository orderRepository;
-	    private final RestTemplate restTemplate;
+	 private final RestTemplate restTemplate;
+	 private final OrderEventProducer orderEventProducer;
 
 	    private static final String USER_SERVICE_URL =
 	            "http://localhost:8085/users/";
@@ -62,6 +65,14 @@ public class OrderService {
 	        order.setTotalPrice(total);
 
 	        Order saved = orderRepository.save(order);
+	        
+	        OrderCreatedEvent event = new OrderCreatedEvent(
+	                saved.getId(),
+	                saved.getUserId(),
+	                saved.getTotalPrice().doubleValue()
+	        );
+	        
+	        orderEventProducer.publishOrderCreated(event);
 
 	        return new OrderResponse(saved.getId(), saved.getUserId(), saved.getStatus());
 	    }

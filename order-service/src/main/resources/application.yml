@@ -3,6 +3,8 @@ spring:
     url: jdbc:postgresql://localhost:5434/orderdb
     username: postgres
     password: postgres
+  kafka:
+     bootstrap-servers: localhost:9092
 
   jpa:
     hibernate:
