@@ -15,5 +15,6 @@ public class OrderEventProducer {
 
         kafkaTemplate.send("order-created", event);
 
+        System.out.println("Order event sent to Kafka: " + event);
     }
 }

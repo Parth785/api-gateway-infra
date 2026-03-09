@@ -17,14 +17,19 @@ import reactor.core.publisher.Mono;
 public class AuthenticationFilter implements GlobalFilter {
 
     private final JwtUtil jwtUtil;
+    
+    public AuthenticationFilter() {
+    	this.jwtUtil = new JwtUtil();
+        System.out.println("AuthenticationFilter loaded");
+    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
         String path = exchange.getRequest().getURI().getPath();
-
+        System.out.println("Incoming request path: " + path);
         // allow login endpoint
-        if (path.contains("/users/login")) {
+        if (path.startsWith("/users")) {
             return chain.filter(exchange);
         }
 

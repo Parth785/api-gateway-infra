@@ -12,6 +12,7 @@ import com.example.order.dto.OrderItemRequest;
 import com.example.order.dto.OrderResponse;
 import com.example.order.dto.OrderStatus;
 import com.example.order.dto.ProductResponse;
+import com.example.order.dto.UserResponse;
 import com.example.order.entity.Order;
 import com.example.order.entity.OrderItem;
 import com.example.order.event.OrderCreatedEvent;
@@ -66,12 +67,19 @@ public class OrderService {
 
 	        Order saved = orderRepository.save(order);
 	        
+	        UserResponse user = restTemplate.getForObject(
+	                "http://localhost:8085/users/" + userId,
+	                UserResponse.class
+	        );
+	        
 	        OrderCreatedEvent event = new OrderCreatedEvent(
 	                saved.getId(),
 	                saved.getUserId(),
+	                user.getEmail(),
 	                saved.getTotalPrice().doubleValue()
 	        );
 	        
+	        System.out.println("Publishing order event: " + event);
 	        orderEventProducer.publishOrderCreated(event);
 
 	        return new OrderResponse(saved.getId(), saved.getUserId(), saved.getStatus());

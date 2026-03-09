@@ -1,12 +1,12 @@
-package com.example.order.event;
+package com.example.notification_service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class OrderCreatedEvent {
 
     private Long orderId;
