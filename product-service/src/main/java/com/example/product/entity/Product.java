@@ -3,6 +3,7 @@ package com.example.product.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,15 @@ public class Product {
     private BigDecimal price;
 
     private Integer stock;
+
+    private String category;
+
+    @Column(length = 1000)
+    private String description;
+
+    private String imageUrl;
+
+    private String modelUrl;
 
     private LocalDateTime createdAt;
 
