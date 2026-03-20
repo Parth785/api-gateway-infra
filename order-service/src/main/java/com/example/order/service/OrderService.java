@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.order.dto.CreateOrderRequest;
 import com.example.order.dto.OrderItemRequest;
+import com.example.order.dto.OrderItemResponse;
 import com.example.order.dto.OrderResponse;
 import com.example.order.dto.OrderStatus;
 import com.example.order.dto.ProductResponse;
@@ -31,6 +32,27 @@ public class OrderService {
 
 	    private static final String USER_SERVICE_URL =
 	            "http://localhost:8085/users/";
+	    
+	 // helper method
+	    private OrderResponse mapToResponse(Order order) {
+	        List<OrderItemResponse> itemResponses = order.getItems()
+	            .stream()
+	            .map(i -> new OrderItemResponse(
+	                i.getProductId(),
+	                i.getQuantity(),
+	                i.getPrice()
+	            ))
+	            .toList();
+
+	        return new OrderResponse(
+	            order.getId(),
+	            order.getUserId(),
+	            order.getStatus(),
+	            order.getTotalPrice(),
+	            order.getCreatedAt(),
+	            itemResponses
+	        );
+	    }
 
 	    public OrderResponse createOrder(Long userId, CreateOrderRequest request) {
 
@@ -82,18 +104,15 @@ public class OrderService {
 	        System.out.println("Publishing order event: " + event);
 	        orderEventProducer.publishOrderCreated(event);
 
-	        return new OrderResponse(saved.getId(), saved.getUserId(), saved.getStatus());
-	    }
-    public List<OrderResponse> getOrdersByUser(Long userId) {
+	        return mapToResponse(saved);
 
-        return orderRepository.findByUserId(userId)
-                .stream()
-                .map(o -> new OrderResponse(
-                        o.getId(),
-                        o.getUserId(),
-                        o.getStatus()))
-                .toList();
-    }
+	    }
+	    public List<OrderResponse> getOrdersByUser(Long userId) {
+	        return orderRepository.findByUserId(userId)
+	                .stream()
+	                .map(this::mapToResponse)
+	                .toList();
+	    }
 
     public OrderResponse updateStatus(Long orderId, OrderStatus status) {
 
@@ -104,10 +123,7 @@ public class OrderService {
 
         Order saved = orderRepository.save(order);
 
-        return new OrderResponse(
-                saved.getId(),
-                saved.getUserId(),
-                saved.getStatus()
-        );
+        return mapToResponse(saved);
+
     }
 }

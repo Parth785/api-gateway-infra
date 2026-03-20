@@ -29,9 +29,11 @@ public class AuthenticationFilter implements GlobalFilter {
         String path = exchange.getRequest().getURI().getPath();
         System.out.println("Incoming request path: " + path);
         // allow login endpoint
-        if (path.startsWith("/users")) {
-            return chain.filter(exchange);
-        }
+        if (path.startsWith("/users") || 
+        	    (path.startsWith("/products") && 
+        	     exchange.getRequest().getMethod().name().equals("GET"))) {
+        	    return chain.filter(exchange);
+        	}
 
         String authHeader = exchange.getRequest()
                 .getHeaders()

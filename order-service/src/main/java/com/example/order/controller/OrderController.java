@@ -19,42 +19,35 @@ import com.example.order.dto.OrderStatus;
 import com.example.order.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
-    
+
+    // create order — userId comes from gateway header
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(
             @RequestHeader("X-User-Id") Long userId,
             @RequestBody CreateOrderRequest request) {
-
         return ResponseEntity.status(201)
                 .body(orderService.createOrder(userId, request));
     }
 
-//    @PostMapping
-//    public ResponseEntity<OrderResponse> createOrder(
-//            @RequestBody CreateOrderRequest request) {
-//
-//        return ResponseEntity.status(201)
-//                .body(orderService.createOrder(request));
-//    }
+    // get orders for logged in user — userId from gateway header
+    @GetMapping("/user")
+    public ResponseEntity<List<OrderResponse>> getOrdersByUser(
+            @RequestHeader("X-User-Id") Long userId) {
+        return ResponseEntity.ok(orderService.getOrdersByUser(userId));
+    }
 
-//    @GetMapping("/user/{userId}")
-//    public List<OrderResponse> getOrdersByUser(
-//            @PathVariable Long userId) {
-//
-//        return orderService.getOrdersByUser(userId);
-//    }
-//
-//    @PutMapping("/{id}/status")
-//    public OrderResponse updateStatus(
-//            @PathVariable Long id,
-//            @RequestParam OrderStatus status) {
-//
-//        return orderService.updateStatus(id, status);
-//    }
+    // update order status — admin use
+    @PutMapping("/{id}/status")
+    public ResponseEntity<OrderResponse> updateStatus(
+            @PathVariable Long id,
+            @RequestParam OrderStatus status) {
+        return ResponseEntity.ok(orderService.updateStatus(id, status));
+    }
 }
