@@ -95,11 +95,12 @@ public class OrderService {
 	        );
 	        
 	        OrderCreatedEvent event = new OrderCreatedEvent(
-	                saved.getId(),
-	                saved.getUserId(),
-	                user.getEmail(),
-	                saved.getTotalPrice().doubleValue()
-	        );
+	        	    saved.getId(),
+	        	    saved.getUserId(),
+	        	    user.getEmail(),
+	        	    user.getName(),        // ← add this
+	        	    saved.getTotalPrice().doubleValue()
+	        	);
 	        
 	        System.out.println("Publishing order event: " + event);
 	        orderEventProducer.publishOrderCreated(event);

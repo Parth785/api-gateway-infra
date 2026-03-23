@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderCreatedEvent {
-
     private Long orderId;
     private Long userId;
     private String userEmail;
+    private String userName;
     private Double totalPrice;
-
 }

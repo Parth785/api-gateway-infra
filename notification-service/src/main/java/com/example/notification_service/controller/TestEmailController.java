@@ -22,6 +22,7 @@ public class TestEmailController {
                 1L,
                 1L,
                 "parth110301@gmail.com",
+                "Parth Lakhani",        // ← add userName
                 500.0
         );
 
