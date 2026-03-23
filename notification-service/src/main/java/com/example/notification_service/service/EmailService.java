@@ -28,7 +28,7 @@ public class EmailService {
 
             helper.setFrom(fromEmail);
             helper.setTo(event.getUserEmail());
-            helper.setSubject("Order Confirmed #" + event.getOrderId() + " — arc.store");
+            helper.setSubject("Order Confirmed #" + event.getOrderId() + " — TheStoreHub");
             helper.setFrom("TheStoreHub <" + fromEmail + ">");
 
 
