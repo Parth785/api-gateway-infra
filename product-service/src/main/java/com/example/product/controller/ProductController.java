@@ -55,4 +55,12 @@ public class ProductController {
         return ResponseEntity.status(201)
                 .body(productService.createProduct(request));
     }
+ // GET /products/category/Laptops?page=0&size=10
+    @GetMapping("/category/{category}")
+    public ResponseEntity<Page<ProductResponse>> getByCategory(
+            @PathVariable String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(productService.getByCategory(category, page, size));
+    }
 }

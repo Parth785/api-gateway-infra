@@ -68,4 +68,10 @@ public class ProductService {
                     query, query, pageable)
                 .map(this::mapToResponse);
     }
+    public Page<ProductResponse> getByCategory(String category, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        return productRepository.findByCategoryIgnoreCase(category, pageable)
+                .map(this::mapToResponse);
+    }
+    
 }
