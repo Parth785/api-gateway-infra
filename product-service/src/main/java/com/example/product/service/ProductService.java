@@ -74,4 +74,8 @@ public class ProductService {
                 .map(this::mapToResponse);
     }
     
+    public List<String> getAllCategories() {
+        return productRepository.findAllCategories();
+    }
+    
 }
