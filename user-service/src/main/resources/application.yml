@@ -19,4 +19,8 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+# Admin credentials — change these
+admin:
+  username: admin
+  password: StoreHub@2026
 

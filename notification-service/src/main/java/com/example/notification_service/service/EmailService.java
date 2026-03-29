@@ -50,7 +50,7 @@ public class EmailService {
                           <tr>
                             <td style="background-color:#09090b;padding:32px 40px;text-align:center;">
                               <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:500;letter-spacing:-0.5px;">
-                                arc<span style="color:#a78bfa;">.</span>store
+                                Store<span style="color:#a78bfa;">Hub</span>
                               </h1>
                             </td>
                           </tr>
@@ -197,13 +197,13 @@ public class EmailService {
                           <tr>
                             <td style="background-color:#fafafa;border-top:1px solid #e4e4e7;padding:24px 40px;text-align:center;">
                               <p style="margin:0 0 8px;color:#09090b;font-size:14px;font-weight:500;">
-                                arc<span style="color:#7c3aed;">.</span>store
+                                Store<span style="color:#7c3aed;">Hub</span>
                               </p>
                               <p style="margin:0;color:#a1a1aa;font-size:12px;">
                                 This is an automated email. Please do not reply directly to this message.
                               </p>
                               <p style="margin:8px 0 0;color:#a1a1aa;font-size:12px;">
-                                © 2026 arc.store. All rights reserved.
+                                © 2026 TheStoreHub. All rights reserved.
                               </p>
                             </td>
                           </tr>

@@ -13,7 +13,9 @@ import com.example.notification_service.service.EmailService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tools.jackson.databind.ObjectMapper;
+//import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @Component
 @RequiredArgsConstructor
