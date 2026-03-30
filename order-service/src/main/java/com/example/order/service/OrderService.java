@@ -1,8 +1,12 @@
 package com.example.order.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -126,5 +130,44 @@ public class OrderService {
 
         return mapToResponse(saved);
 
+    }
+
+    public Map<String, Object> getOrderStats() {
+        Map<String, Object> stats = new HashMap<>();
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().plusDays(1).atStartOfDay();
+
+        stats.put("totalOrders", orderRepository.count());
+        stats.put("todayOrders", orderRepository.countOrdersCreatedToday(startOfDay, endOfDay));
+        stats.put("totalRevenue", orderRepository.getTotalRevenue());
+        stats.put("todayRevenue", orderRepository.getTodayRevenue(startOfDay, endOfDay));
+        stats.put("pendingOrders", orderRepository.countByStatus(OrderStatus.PENDING));
+        stats.put("processingOrders", orderRepository.countByStatus(OrderStatus.PROCESSING));
+        stats.put("shippedOrders", orderRepository.countByStatus(OrderStatus.SHIPPED));
+        stats.put("deliveredOrders", orderRepository.countByStatus(OrderStatus.DELIVERED));
+
+        return stats;
+    }
+
+    public List<Map<String, Object>> getDailyRevenue(int days) {
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (int i = days - 1; i >= 0; i--) {
+            LocalDate date = LocalDate.now().minusDays(i);
+            LocalDateTime startOfDay = date.atStartOfDay();
+            LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
+
+            Double revenue = orderRepository.getRevenueByDate(startOfDay, endOfDay);
+
+            Map<String, Object> dayData = new HashMap<>();
+            dayData.put("date", date.toString());
+            dayData.put("revenue", revenue != null ? revenue : 0.0);
+            dayData.put("day", date.getDayOfWeek().toString().substring(0, 3));
+
+            result.add(dayData);
+        }
+
+        return result;
     }
 }

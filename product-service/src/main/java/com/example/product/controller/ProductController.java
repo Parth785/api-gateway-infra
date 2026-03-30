@@ -1,6 +1,8 @@
 package com.example.product.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 
     private final ProductService productService;
+    private final com.example.product.repository.ProductRepository productRepository;
 
     // GET /products?page=0&size=20
     @GetMapping
@@ -67,5 +70,14 @@ public class ProductController {
     @GetMapping("/categories")
     public ResponseEntity<List<String>> getAllCategories() {
         return ResponseEntity.ok(productService.getAllCategories());
+    }
+    
+    @GetMapping("/admin/stats")
+    public ResponseEntity<Map<String, Object>> getProductStats() {
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("totalProducts", productRepository.count());
+        stats.put("lowStockProducts", productRepository.countLowStock());
+        stats.put("outOfStockProducts", productRepository.countOutOfStock());
+        return ResponseEntity.ok(stats);
     }
 }

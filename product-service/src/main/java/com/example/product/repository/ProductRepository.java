@@ -19,4 +19,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     
     @Query("SELECT DISTINCT p.category FROM Product p ORDER BY p.category")
     List<String> findAllCategories();
+    
+    @Query("SELECT COUNT(p) FROM Product p WHERE p.stock < 10")
+    Long countLowStock();
+
+    @Query("SELECT COUNT(p) FROM Product p WHERE p.stock = 0")
+    Long countOutOfStock();
 }

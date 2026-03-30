@@ -42,6 +42,7 @@ public class AdminController {
 
         // generate JWT with ADMIN role
         String token = jwtUtil.generateAdminToken();
+        System.out.println("Admin logged in, token: " + token);
         return ResponseEntity.ok(token);
     }
 

@@ -1,6 +1,7 @@
 package com.example.order.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,5 +50,17 @@ public class OrderController {
             @PathVariable Long id,
             @RequestParam OrderStatus status) {
         return ResponseEntity.ok(orderService.updateStatus(id, status));
+    }
+    
+    @GetMapping("/admin/stats")
+    public ResponseEntity<Map<String, Object>> getOrderStats() {
+        Map<String, Object> stats = orderService.getOrderStats();
+        return ResponseEntity.ok(stats);
+    }
+    
+    @GetMapping("/admin/revenue")
+    public ResponseEntity<List<Map<String, Object>>> getDailyRevenue(
+            @RequestParam(defaultValue = "7") int days) {
+        return ResponseEntity.ok(orderService.getDailyRevenue(days));
     }
 }

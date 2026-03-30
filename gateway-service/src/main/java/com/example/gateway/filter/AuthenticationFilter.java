@@ -29,8 +29,9 @@ public class AuthenticationFilter implements GlobalFilter {
         String path = exchange.getRequest().getURI().getPath();
         System.out.println("Incoming request path: " + path);
         // allow login endpoint
-        if (path.startsWith("/users") || 
-        	    (path.startsWith("/products") && 
+        if (path.startsWith("/users") ||
+        	    path.equals("/admin/login") ||
+        	    (path.startsWith("/products") &&
         	     exchange.getRequest().getMethod().name().equals("GET"))) {
         	    return chain.filter(exchange);
         	}
@@ -52,10 +53,20 @@ public class AuthenticationFilter implements GlobalFilter {
             Long userId = claims.get("userId", Long.class);
 
             // attach userId to request header
-            ServerHttpRequest mutatedRequest = exchange.getRequest()
-                    .mutate()
-                    .header("X-User-Id", userId.toString())
-                    .build();
+//            ServerHttpRequest mutatedRequest = exchange.getRequest()
+//                    .mutate()
+//                    .header("X-User-Id", userId.toString())
+//                    .build();
+            
+            String role = claims.get("role", String.class) != null
+            	    ? claims.get("role", String.class)
+            	    : "USER";
+
+            	ServerHttpRequest mutatedRequest = exchange.getRequest()
+            	    .mutate()
+            	    .header("X-User-Id", userId != null ? userId.toString() : "0")
+            	    .header("X-User-Role", role)
+            	    .build();
 
             return chain.filter(exchange.mutate().request(mutatedRequest).build());
 
