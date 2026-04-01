@@ -180,4 +180,9 @@ public class OrderService {
         return orderRepository.findAll(pageable)
                 .map(this::mapToResponse);
     }
+    
+    public com.example.order.entity.Order getOrderById(Long id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+    }
 }
