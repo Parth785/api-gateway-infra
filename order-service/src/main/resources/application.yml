@@ -26,7 +26,3 @@ services:
   product-service:
     url: http://localhost:8087
 
-
-razorpay:
-  key-id: rzp_test_your_key_id_here
-  key-secret: your_key_secret_here

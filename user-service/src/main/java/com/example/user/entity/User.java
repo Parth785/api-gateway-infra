@@ -34,7 +34,7 @@ public class User {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String role = "USER"; // default is USER
 
     @PrePersist
