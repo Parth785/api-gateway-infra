@@ -31,8 +31,8 @@ public class AuthenticationFilter implements GlobalFilter {
         // allow login endpoint
         if (path.startsWith("/users") ||
         	    path.equals("/admin/login") ||
-        	    (path.startsWith("/products") &&
-        	     exchange.getRequest().getMethod().name().equals("GET"))) {
+        	    (path.startsWith("/products") && exchange.getRequest().getMethod().name().equals("GET")) ||
+        	    (path.startsWith("/reviews") && exchange.getRequest().getMethod().name().equals("GET"))) {
         	    return chain.filter(exchange);
         	}
 
@@ -51,22 +51,25 @@ public class AuthenticationFilter implements GlobalFilter {
             Claims claims = jwtUtil.validateToken(token);
 
             Long userId = claims.get("userId", Long.class);
+            String role = claims.get("role", String.class) != null ? claims.get("role", String.class) : "USER";
+            String userName = claims.get("userName", String.class) != null ? claims.get("userName", String.class) : "User";
 
-            // attach userId to request header
-//            ServerHttpRequest mutatedRequest = exchange.getRequest()
-//                    .mutate()
-//                    .header("X-User-Id", userId.toString())
-//                    .build();
+            ServerHttpRequest mutatedRequest = exchange.getRequest()
+                .mutate()
+                .header("X-User-Id", userId != null ? userId.toString() : "0")
+                .header("X-User-Role", role)
+                .header("X-User-Name", userName)
+                .build();
             
-            String role = claims.get("role", String.class) != null
-            	    ? claims.get("role", String.class)
-            	    : "USER";
-
-            	ServerHttpRequest mutatedRequest = exchange.getRequest()
-            	    .mutate()
-            	    .header("X-User-Id", userId != null ? userId.toString() : "0")
-            	    .header("X-User-Role", role)
-            	    .build();
+//            String role = claims.get("role", String.class) != null
+//            	    ? claims.get("role", String.class)
+//            	    : "USER";
+//
+//            ServerHttpRequest mutatedRequest = exchange.getRequest()
+//            	    .mutate()
+//            	    .header("X-User-Id", userId.toString())
+//            	    .header("X-User-Role", role)
+//            	    .build();
 
             return chain.filter(exchange.mutate().request(mutatedRequest).build());
 
