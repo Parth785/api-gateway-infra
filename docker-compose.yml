@@ -119,6 +119,8 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      USER_SERVICE_URL: http://user-service:8085
+      PRODUCT_SERVICE_URL: http://product-service:8087
 
   notification-service:
     build: ./notification-service
@@ -138,9 +140,12 @@ services:
     depends_on:
       - postgres-review
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-review:5432/reviewdb
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      review-service:
+  environment:
+    SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-review:5432/reviewdb
+    SPRING_DATASOURCE_USERNAME: postgres
+    SPRING_DATASOURCE_PASSWORD: postgres
+    PRODUCT_SERVICE_URL: http://product-service:8087
 
   gateway-service:
     build: ./gateway-service
