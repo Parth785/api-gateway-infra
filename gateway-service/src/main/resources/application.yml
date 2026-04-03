@@ -7,27 +7,27 @@ spring:
       routes:
 
         - id: user-service
-          uri: http://localhost:8085
+          uri: http://user-service:8085
           predicates:
             - Path=/users/**
 
         - id: admin-service
-          uri: http://localhost:8085
+          uri: http://user-service:8085
           predicates:
             - Path=/admin/**
 
         - id: order-service
-          uri: http://localhost:8082
+          uri: http://order-service:8082
           predicates:
             - Path=/orders/**
 
         - id: product-service
-          uri: http://localhost:8087
+          uri: http://product-service:8087
           predicates:
             - Path=/products/**
 
         - id: review-service
-          uri: http://localhost:8091
+          uri: http://review-service:8091
           predicates:
             - Path=/reviews/**
 management:

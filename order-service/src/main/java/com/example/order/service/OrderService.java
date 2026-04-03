@@ -39,7 +39,7 @@ public class OrderService {
 	 private final OrderEventProducer orderEventProducer;
 
 	    private static final String USER_SERVICE_URL =
-	            "http://localhost:8085/users/";
+	            "http://user-service:8085/users/";
 	    
 	 // helper method
 	    private OrderResponse mapToResponse(Order order) {
@@ -75,7 +75,7 @@ public class OrderService {
 
 	            ProductResponse product =
 	                    restTemplate.getForObject(
-	                            "http://localhost:8087/products/" + itemReq.getProductId(),
+	                            "http://product-service:8087/products/" + itemReq.getProductId(),
 	                            ProductResponse.class);
 
 	            BigDecimal itemPrice = product.getPrice();
@@ -98,7 +98,7 @@ public class OrderService {
 	        Order saved = orderRepository.save(order);
 	        
 	        UserResponse user = restTemplate.getForObject(
-	                "http://localhost:8085/users/" + userId,
+	                "http://user-service:8085/users/" + userId,
 	                UserResponse.class
 	        );
 	        
