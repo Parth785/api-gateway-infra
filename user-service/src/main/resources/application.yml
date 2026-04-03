@@ -4,9 +4,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/userdb?options=-c%20TimeZone=Asia/Kolkata
-    username: postgres
-    password: postgres
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/userdb}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
 #		url: ${SPRING_DATASOURCE_URL}
 #		username: ${SPRING_DATASOURCE_USERNAME}
 #		password: ${SPRING_DATASOURCE_PASSWORD}
@@ -23,4 +23,12 @@ spring:
 admin:
   username: admin
   password: StoreHub@2026
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
 
