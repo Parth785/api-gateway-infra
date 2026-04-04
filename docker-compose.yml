@@ -2,15 +2,13 @@ version: '3.8'
 
 services:
 
-  # ── Databases ──────────────────────────────────────────
-
   postgres-user:
     image: postgres:15
     container_name: postgres-user
     environment:
-      POSTGRES_DB: userdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      - POSTGRES_DB=userdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     ports:
       - "5433:5432"
     volumes:
@@ -20,9 +18,9 @@ services:
     image: postgres:15
     container_name: postgres-product
     environment:
-      POSTGRES_DB: productdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      - POSTGRES_DB=productdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     ports:
       - "5434:5432"
     volumes:
@@ -32,9 +30,9 @@ services:
     image: postgres:15
     container_name: postgres-order
     environment:
-      POSTGRES_DB: orderdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      - POSTGRES_DB=orderdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     ports:
       - "5435:5432"
     volumes:
@@ -44,22 +42,20 @@ services:
     image: postgres:15
     container_name: postgres-review
     environment:
-      POSTGRES_DB: reviewdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      - POSTGRES_DB=reviewdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     ports:
       - "5438:5432"
     volumes:
       - postgres-review-data:/var/lib/postgresql/data
 
-  # ── Kafka ──────────────────────────────────────────────
-
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
     container_name: zookeeper
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
     ports:
       - "2181:2181"
 
@@ -70,16 +66,15 @@ services:
       - zookeeper
     ports:
       - "9092:9092"
+      - "9093:9093"
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9093
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-
-  # ── Microservices ──────────────────────────────────────
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9093
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9093
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
 
   user-service:
     build: ./user-service
@@ -89,10 +84,9 @@ services:
     depends_on:
       - postgres-user
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-user:5432/userdb
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-user:5432/userdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
 
   product-service:
     build: ./product-service
@@ -102,9 +96,9 @@ services:
     depends_on:
       - postgres-product
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-product:5432/productdb
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-product:5432/productdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
 
   order-service:
     build: ./order-service
@@ -115,12 +109,12 @@ services:
       - postgres-order
       - kafka
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-order:5432/orderdb
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      USER_SERVICE_URL: http://user-service:8085
-      PRODUCT_SERVICE_URL: http://product-service:8087
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-order:5432/orderdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - USER_SERVICE_URL=http://user-service:8085
+      - PRODUCT_SERVICE_URL=http://product-service:8087
 
   notification-service:
     build: ./notification-service
@@ -130,7 +124,7 @@ services:
     depends_on:
       - kafka
     environment:
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
 
   review-service:
     build: ./review-service
@@ -140,12 +134,10 @@ services:
     depends_on:
       - postgres-review
     environment:
-      review-service:
-  environment:
-    SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-review:5432/reviewdb
-    SPRING_DATASOURCE_USERNAME: postgres
-    SPRING_DATASOURCE_PASSWORD: postgres
-    PRODUCT_SERVICE_URL: http://product-service:8087
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-review:5432/reviewdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - PRODUCT_SERVICE_URL=http://product-service:8087
 
   gateway-service:
     build: ./gateway-service
@@ -158,8 +150,6 @@ services:
       - order-service
       - review-service
 
-  # ── Monitoring ─────────────────────────────────────────
-
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -169,10 +159,6 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
       - gateway-service
-      - user-service
-      - product-service
-      - order-service
-      - review-service
 
   grafana:
     image: grafana/grafana:latest
@@ -180,7 +166,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      GF_SECURITY_ADMIN_PASSWORD: admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - grafana-data:/var/lib/grafana
     depends_on:
