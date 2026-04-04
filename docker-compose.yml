@@ -172,6 +172,16 @@ services:
     depends_on:
       - prometheus
 
+  frontend:
+    build:
+      context: ../../../ecommerce-frontend/TheStoreHub
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - gateway-service
+
 volumes:
   postgres-user-data:
   postgres-product-data:
