@@ -23,7 +23,7 @@ public class KafkaConsumerConfig {
 	 @Value("${spring.kafka.bootstrap-servers}")
 	 private String bootstrapServers;
 	 
-	 @Bean
+	 	@Bean
 	    public ConsumerFactory<String, OrderCreatedEvent> consumerFactory() {
 	        JsonDeserializer<OrderCreatedEvent> deserializer =
 	                new JsonDeserializer<>(OrderCreatedEvent.class);

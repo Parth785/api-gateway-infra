@@ -5,13 +5,12 @@ spring:
   cloud:
     gateway:
       routes:
-
         - id: user-service
           uri: http://user-service:8085
           predicates:
             - Path=/users/**
 
-        - id: admin-service
+        - id: admin-route
           uri: http://user-service:8085
           predicates:
             - Path=/admin/**
@@ -30,6 +29,18 @@ spring:
           uri: http://review-service:8091
           predicates:
             - Path=/reviews/**
+
+# disable service discovery
+discovery:
+  enabled: false
+
+# disable Redis autoconfiguration
+autoconfigure:
+  exclude:
+    - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+    - org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration
+
+
 management:
   endpoints:
     web:
