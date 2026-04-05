@@ -174,7 +174,7 @@ services:
 
   frontend:
     build:
-      context: ../../../ecommerce-frontend/TheStoreHub
+      context: ../../../Music/ecommerce-frontend/TheStoreHub
       dockerfile: Dockerfile
     container_name: frontend
     ports:
