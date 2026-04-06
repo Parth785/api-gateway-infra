@@ -17,6 +17,7 @@ public class CorsConfig {
 
         // allows any localhost port in dev
         // when you go to production replace this with your real domain
+        //Commit for today to allow localhost and any subdomain of yourdomain.com
         config.setAllowedOriginPatterns(List.of(
         	 "http://localhost",
         	 "http://localhost:5173", // any localhost port — covers 5173, 5174, 5175 etc
